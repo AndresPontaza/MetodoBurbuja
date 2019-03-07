@@ -36,9 +36,12 @@ cadena = [\"]([^\"\n]|(\\\"))*[\"]
 /*------------  3raa Area: Reglas Lexicas ---------*/
 
 //-----> Simbolos
+<YYINITIAL> "("    { System.out.println("Reconocio "+yytext()+" Parentesis Abre"); return new Symbol(Simbolos.para, yycolumn, yyline, yytext()); }
+<YYINITIAL> ")"    { System.out.println("Reconocio "+yytext()+" Parentesis Cierra"); return new Symbol(Simbolos.parc, yycolumn, yyline, yytext()); }
 
-//-------> Punto
+//-------> Punto, Punto y coma
 <YYINITIAL> "\u002E"    { System.out.println("Reconocio "+yytext()+" punto"); return new Symbol(Simbolos.punto, yycolumn, yyline, yytext()); }
+<YYINITIAL> ";"    { System.out.println("Reconocio "+yytext()+" Punto y coma"); return new Symbol(Simbolos.pyc, yycolumn, yyline, yytext()); }
 
 //-------> Reservadas, tipos de datos y del sistema
 <YYINITIAL> "imprimir"       { System.out.println("Reconocio "+yytext()+" Palabra reservada Imprimir"); return new Symbol(Simbolos.imprimir, yycolumn, yyline, yytext()); }
