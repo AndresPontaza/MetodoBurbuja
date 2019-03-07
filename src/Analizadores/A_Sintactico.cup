@@ -8,6 +8,7 @@ import java.util.LinkedList;
 parser code
 {:
     public String resultado="";
+    public static LinkedList<String> linkedlist = new LinkedList<String>();
    
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
@@ -46,7 +47,7 @@ action code
 terminal punto,pyc,imprimir,cad,para,parc;
 
 //------> declaracion de no terminales
-non terminal String A;
+non terminal String A,B;
 
 //----> precedencia de menor a mayor 
 
@@ -54,5 +55,9 @@ start with A;
 
 /*--------------- 3ra Area: Reglas Semanticas -----------------------*/
 
-A::= imprimir para cad:text parc pyc {: system.out.println(tex):}
-     |A imprimir para cad:text parc pyc {: system.out.println(tex):};
+A::= imprimir para B parc pyc {: System.out.println(resultado);
+                                        linkedlist.add(resultado); :}
+     |A imprimir para B parc pyc {: System.out.println(resultado); 
+                                           linkedlist.add(resultado); :};
+B::= cad:text {:resultado=resultado+text; :}
+    | B punto cad:text {: resultado=resultado+text; :}; 
