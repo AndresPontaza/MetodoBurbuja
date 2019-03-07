@@ -8,6 +8,7 @@ package Analizadores;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import java_cup.runtime.XMLElement;
+import javax.swing.JOptionPane;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
   */
@@ -115,6 +116,7 @@ public class analisis_sintactico extends java_cup.runtime.lr_parser {
         System.out.println("\t\tLexema: "+lexema);
         System.out.println("\t\tFila: "+fila);
         System.out.println("\t\tColumna: "+columna);  
+        JOptionPane.showMessageDialog(null, "Error Sintactico Recuperado", "Lexema"+lexema+" fila"+fila+" columna"+columna, JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores
@@ -127,7 +129,8 @@ public class analisis_sintactico extends java_cup.runtime.lr_parser {
         System.out.println("!!!!!!! Error Sintactico, Panic Mode !!!!!!! ");
         System.out.println("\t\tLexema: "+lexema);
         System.out.println("\t\tFila: "+fila);
-        System.out.println("\t\tColumna: "+columna);     
+        System.out.println("\t\tColumna: "+columna);  
+        JOptionPane.showMessageDialog(null, "Error Sintactico", "Lexema"+lexema+" fila"+fila+" columna"+columna, JOptionPane.INFORMATION_MESSAGE);   
     }
 
 

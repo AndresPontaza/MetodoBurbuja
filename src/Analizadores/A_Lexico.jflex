@@ -54,4 +54,5 @@ cadena = [\"]([^\"\n]|(\\\"))*[\"]
 
 //------> Errores Lexicos
 .                       { System.out.println("Error Lexico"+yytext()+" Linea "+yyline+" Columna "+yycolumn);
+                          JOptionPane.showMessageDialog(null, "Error Lexico", "Lexema"+yytext()+" fila"+yyline+" columna"+yycolumn, JOptionPane.INFORMATION_MESSAGE);
                         }

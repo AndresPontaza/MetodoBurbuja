@@ -4,6 +4,7 @@
 //------> Paquetes,importaciones
 package Analizadores;
 import java_cup.runtime.*;
+import javax.swing.JOptionPane;
 
 
 /*------------  2da Area: Opciones y Declaraciones ---------*/
@@ -617,6 +618,7 @@ public class Analizador_Lexico implements java_cup.runtime.Scanner {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
             { System.out.println("Error Lexico"+yytext()+" Linea "+yyline+" Columna "+yycolumn);
+                          JOptionPane.showMessageDialog(null, "Error Lexico", "Lexema"+yytext()+" fila"+yyline+" columna"+yycolumn, JOptionPane.INFORMATION_MESSAGE);
             } 
             // fall through
           case 9: break;

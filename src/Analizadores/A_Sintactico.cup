@@ -21,6 +21,7 @@ parser code
         System.out.println("\t\tLexema: "+lexema);
         System.out.println("\t\tFila: "+fila);
         System.out.println("\t\tColumna: "+columna);  
+        JOptionPane.showMessageDialog(null, "Error Sintactico Recuperado", "Lexema"+lexema+" fila"+fila+" columna"+columna, JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores
@@ -33,7 +34,8 @@ parser code
         System.out.println("!!!!!!! Error Sintactico, Panic Mode !!!!!!! ");
         System.out.println("\t\tLexema: "+lexema);
         System.out.println("\t\tFila: "+fila);
-        System.out.println("\t\tColumna: "+columna);     
+        System.out.println("\t\tColumna: "+columna);  
+        JOptionPane.showMessageDialog(null, "Error Sintactico", "Lexema"+lexema+" fila"+fila+" columna"+columna, JOptionPane.INFORMATION_MESSAGE);   
     }
 :}
 

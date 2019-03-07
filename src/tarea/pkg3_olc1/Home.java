@@ -1,3 +1,5 @@
+package tarea.pkg3_olc1;
+
 
 import Analizadores.Analizador_Lexico;
 import Analizadores.analisis_sintactico;
@@ -121,6 +123,7 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        consola.setText("");
         String datos= Area.getText();
         Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader (new StringReader(datos)));
         analisis_sintactico sintactico = new analisis_sintactico(lexico);
