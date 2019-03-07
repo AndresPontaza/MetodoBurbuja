@@ -1,27 +1,19 @@
-/*----------------------------------------------------------------------------
---------------------- 1ra. Area: Codigo de Usuario
-----------------------------------------------------------------------------*/
-
-//-------> Paquete, importaciones
-
+/*------------  1ra Area: Codigo de Usuario ---------*/
+//------> Paquetes,importaciones
 package Analizadores;
-
 import java_cup.runtime.*;
-import java.util.ArrayList;
 
+
+/*------------  2da Area: Opciones y Declaraciones ---------*/
 %%
-/*----------------------------------------------------------------------------
---------------------- 2da. Area: Opciones y Declaraciones
-----------------------------------------------------------------------------*/
-
 %{
-    String cadena="";
-    public static LinkedList<AcepErr> TablaErr=new LinkedList<AcepErr>();
+    //----> Codigo de usuario en sintaxis java
+     
 %}
 
 //-------> Directivas
-%public
-%class ALexico
+%public 
+%class Analizador_Lexico
 %cupsym Simbolos
 %cup
 %char
@@ -30,137 +22,34 @@ import java.util.ArrayList;
 %ignorecase
 %line
 %unicode
-
-//-------> Expresiones Regulares
-digito = [0-9]
-numero = {digito}+("." {digito}+)?
-letra = [a-zA-ZñÑ]
-id = {letra}+({letra}|{digito}|"_"|" ")*
+%8bit
+%full
+%unicode
 
 
-//-------> Estados
-%state COMENT_SIMPLE
-%state COMENT_MULTI
-%state RUTA
+//------> Expresiones Regulares
+cadena = [\"]([^\"\n]|(\\\"))*[\"]
+
+//------> Estados
 
 %%
-/*-------------------------------------------------------------------
---------------------- 3ra. y ultima area: Reglas Lexicas
--------------------------------------------------------------------*/
+/*------------  3raa Area: Reglas Lexicas ---------*/
 
-//-------> Comentarios
+//-----> Simbolos
 
-<RUTA>{
-[\"] {  String temporal=cadena; cadena=""; yybegin(YYINITIAL);
-        return new Symbol(Simbolos.ruta, yychar,yyline,temporal);   }
-[^\"] { cadena+=yytext(); }
-}
-<YYINITIAL> "/*"                {yybegin(COMENT_MULTI);}
-<COMENT_MULTI> "*/"             {yybegin(YYINITIAL);}
-<COMENT_MULTI> .                {}
-<COMENT_MULTI> [ \t\r\n\f]      {}
-
-<YYINITIAL> "//"                {yybegin(COMENT_SIMPLE);}
-<COMENT_SIMPLE> [^"\n"]         {}
-<COMENT_SIMPLE> "\n"            {yybegin(YYINITIAL);}
-
-
-//-------> Simbolos
-
-<YYINITIAL> ","         {   System.out.println("Reconocido: <<"+yytext()+">>, coma");
-                            return new Symbol(Simbolos.coma, yycolumn, yyline, yytext());}
-
-<YYINITIAL> ":"         {   System.out.println("Reconocido: <<"+yytext()+">>, dosp");
-                            return new Symbol(Simbolos.dosp, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "("         {   System.out.println("Reconocido: <<"+yytext()+">>, apar");
-                            return new Symbol(Simbolos.apar, yycolumn, yyline, yytext());}
-
-<YYINITIAL> ")"         {   System.out.println("Reconocido: <<"+yytext()+">>, cpar");
-                            return new Symbol(Simbolos.cpar, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "{"         {   System.out.println("Reconocido: <<"+yytext()+">>, alla");
-                            return new Symbol(Simbolos.alla, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "}"         {   System.out.println("Reconocido: <<"+yytext()+">>, clla");
-                            return new Symbol(Simbolos.clla, yycolumn, yyline, yytext());}
-
-//-------> Operadores Aritmeticos
-
-<YYINITIAL> "+"         {   System.out.println("Reconocido: <<"+yytext()+">>, mas");
-                            return new Symbol(Simbolos.mas, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "-"         {   System.out.println("Reconocido: <<"+yytext()+">>, menos");
-                            return new Symbol(Simbolos.menos, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "*"         {   System.out.println("Reconocido: <<"+yytext()+">>, por");
-                            return new Symbol(Simbolos.por, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "/"         {   System.out.println("Reconocido: <<"+yytext()+">>, dividir");
-                            return new Symbol(Simbolos.dividir, yycolumn, yyline, yytext());}
-
+//-------> Punto
+<YYINITIAL> "\u002E"    { System.out.println("Reconocio "+yytext()+" punto"); return new Symbol(Simbolos.punto, yycolumn, yyline, yytext()); }
 
 //-------> Reservadas, tipos de datos y del sistema
+<YYINITIAL> "imprimir"       { System.out.println("Reconocio "+yytext()+" Palabra reservada Imprimir"); return new Symbol(Simbolos.cuerpo, yycolumn, yyline, yytext()); }
 
-<YYINITIAL> "Escenario"             {   System.out.println("Reconocido: <<"+yytext()+">>, rvoid");
-                                return new Symbol(Simbolos.rescenario, yycolumn, yyline, yytext());}
+//-------> Simbolos ER
+<YYINITIAL> {cadena}    { System.out.println("Reconocio "+yytext()+" cad"); return new Symbol(Simbolos.cad, yycolumn, yyline, yytext()); }
 
-<YYINITIAL> "Nave"                  {   System.out.println("Reconocido: <<"+yytext()+">>, rint");
-                                return new Symbol(Simbolos.rnave, yycolumn, yyline, yytext());}
+//------> Espacios
+[ \t\r\n\f]             {/* Espacios en blanco, se ignoran */}
 
-<YYINITIAL> "Enemigos"              {   System.out.println("Reconocido: <<"+yytext()+">>, rdouble");
-                                return new Symbol(Simbolos.renemigos, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "fondo"                 {   System.out.println("Reconocido: <<"+yytext()+">>, rstring");
-                                return new Symbol(Simbolos.rfondo, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "sonido"                 {   System.out.println("Reconocido: <<"+yytext()+">>, rchar");
-                                return new Symbol(Simbolos.rsonido, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "imagen_nave"            {   System.out.println("Reconocido: <<"+yytext()+">>, rbool");
-                                return new Symbol(Simbolos.rimagen_nave, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "imagen_disparo"         {   System.out.println("Reconocido: <<"+yytext()+">>, rstack");
-                                return new Symbol(Simbolos.rimagen_disparo, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "sonido_disparo"          {   System.out.println("Reconocido: <<"+yytext()+">>, rheap");
-                                return new Symbol(Simbolos.rsonido_disparo, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "vida"                    {   System.out.println("Reconocido: <<"+yytext()+">>, rmain");
-                                return new Symbol(Simbolos.rvida, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "ataque"                  {   System.out.println("Reconocido: <<"+yytext()+">>, rif");
-                                return new Symbol(Simbolos.rataque, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "nombre"                  {   System.out.println("Reconocido: <<"+yytext()+">>, rgoto");
-                                return new Symbol(Simbolos.rnombre, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "imagen_enemigo"          {   System.out.println("Reconocido: <<"+yytext()+">>, rgoto");
-                                return new Symbol(Simbolos.rimagen_enemigo, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "frecuencia"              {   System.out.println("Reconocido: <<"+yytext()+">>, rcall");
-                                return new Symbol(Simbolos.rfrecuencia, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "velocidad"               {   System.out.println("Reconocido: <<"+yytext()+">>, printf");
-                                return new Symbol(Simbolos.rvelocidad, yycolumn, yyline, yytext());}
-
-<YYINITIAL> "punteo"                  {   System.out.println("Reconocido: <<"+yytext()+">>, prints");
-                                return new Symbol(Simbolos.rpunteo, yycolumn, yyline, yytext());}
-
-"\"" {yybegin(RUTA);}
-
-<YYINITIAL> {numero}                  {   System.out.println("Reconocido: <<"+yytext()+">>, numero ");
-                                return new Symbol(Simbolos.numero, yycolumn, yyline, yytext());}
-
-<YYINITIAL> {id}                      {   System.out.println("Reconocido: <<"+yytext()+">>, id ");
-                                return new Symbol(Simbolos.id, yycolumn, yyline, yytext());}
-
-
-
-
-[ \t\r\n\f]                 {/* ignore white space. */ }
- 
-.                           {   System.out.println("Error Lexico: <<"+yytext()+">> ["+yyline+" , "+yycolumn+"]");
-                                AcepErr datos =new AcepErr(yytext(),"ERROR LEXICO",(yyline+1),(yycolumn+1), "Simbolo no existe en el lenguaje");
-                                    TablaErr.add(datos);}
-
+//------> Errores Lexicos
+.                       { System.out.println("Error Lexico"+yytext()+" Linea "+yyline+" Columna "+yycolumn);
+                          TError datos = new TError(yytext(),yyline,yycolumn,"Error Lexico","Simbolo no existe en el lenguaje");
+                          TablaEL.add(datos);}
