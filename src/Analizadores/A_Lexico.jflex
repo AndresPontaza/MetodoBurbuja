@@ -41,7 +41,7 @@ cadena = [\"]([^\"\n]|(\\\"))*[\"]
 <YYINITIAL> "\u002E"    { System.out.println("Reconocio "+yytext()+" punto"); return new Symbol(Simbolos.punto, yycolumn, yyline, yytext()); }
 
 //-------> Reservadas, tipos de datos y del sistema
-<YYINITIAL> "imprimir"       { System.out.println("Reconocio "+yytext()+" Palabra reservada Imprimir"); return new Symbol(Simbolos.cuerpo, yycolumn, yyline, yytext()); }
+<YYINITIAL> "imprimir"       { System.out.println("Reconocio "+yytext()+" Palabra reservada Imprimir"); return new Symbol(Simbolos.imprimir, yycolumn, yyline, yytext()); }
 
 //-------> Simbolos ER
 <YYINITIAL> {cadena}    { System.out.println("Reconocio "+yytext()+" cad"); return new Symbol(Simbolos.cad, yycolumn, yyline, yytext()); }
@@ -51,5 +51,4 @@ cadena = [\"]([^\"\n]|(\\\"))*[\"]
 
 //------> Errores Lexicos
 .                       { System.out.println("Error Lexico"+yytext()+" Linea "+yyline+" Columna "+yycolumn);
-                          TError datos = new TError(yytext(),yyline,yycolumn,"Error Lexico","Simbolo no existe en el lenguaje");
-                          TablaEL.add(datos);}
+                        }
