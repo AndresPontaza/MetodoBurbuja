@@ -199,7 +199,7 @@ class CUP$analisis_sintactico$actions {
 		int textleft = ((java_cup.runtime.Symbol)CUP$analisis_sintactico$stack.peek()).left;
 		int textright = ((java_cup.runtime.Symbol)CUP$analisis_sintactico$stack.peek()).right;
 		Object text = (Object)((java_cup.runtime.Symbol) CUP$analisis_sintactico$stack.peek()).value;
-		resultado=resultado+text; 
+		resultado=(String) text; 
               CUP$analisis_sintactico$result = parser.getSymbolFactory().newSymbol("B",1, ((java_cup.runtime.Symbol)CUP$analisis_sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$analisis_sintactico$stack.peek()), RESULT);
             }
           return CUP$analisis_sintactico$result;
