@@ -43,17 +43,16 @@ action code
 
 /*--------------- 2da Area: Declaraciones -----------------------*/
 //------> declaracion de terminales 
-terminal punto,imprimir,cad;
+terminal punto,pyc,imprimir,cad,para,parc;
 
 //------> declaracion de no terminales
 non terminal String A;
 
 //----> precedencia de menor a mayor 
-precedence left mas, menos;
-precedence left por, div;
 
 start with A;
 
 /*--------------- 3ra Area: Reglas Semanticas -----------------------*/
 
-A::=  {};
+A::= imprimir para cad:text parc pyc {: system.out.println(tex):}
+     |A imprimir para cad:text parc pyc {: system.out.println(tex):};
